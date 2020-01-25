@@ -33,7 +33,7 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
     Products products;
     DatabaseReference mRef;
     Button call,order,orderAndDeliver, searchDelivery,bidding;
-    int price,deliveryCost;
+    int price,deliveryCost=-1;
     String mobileno;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +114,13 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
 
         }else if(view==order){
             OrderRequest orderRequest=new OrderRequest(mobileno,String.valueOf(price),String.valueOf(deliveryCost),"1kg");
-            orderRequest.setStatus("0");
+            orderRequest.setStatus("Pending...");
+            if(deliveryCost==-1){
+                orderRequest.setDeliverPrice("N/A");
+            }
             Date currentTime = Calendar.getInstance().getTime();
             mRef.child("Requests").child(products.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(orderRequest);
-            mRef.child("Consumers").child("Orders").child(products.getKey()).setValue(currentTime.toString());
+            mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Orders").child(products.getKey()).setValue(currentTime.toString());
         }
 
     }

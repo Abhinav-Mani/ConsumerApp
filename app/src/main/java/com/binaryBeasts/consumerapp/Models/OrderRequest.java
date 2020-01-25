@@ -3,6 +3,9 @@ package com.binaryBeasts.consumerapp.Models;
 public class OrderRequest {
     String from,ProductPrice,DeliverPrice,Amount,status,key;
 
+    public OrderRequest() {
+    }
+
     public OrderRequest(String from, String productPrice, String deliverPrice, String amount) {
         this.from = from;
         ProductPrice = productPrice;
