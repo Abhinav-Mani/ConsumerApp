@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/vegibasketmobile"
+    android:gravity="center"
     tools:context=".Activities.LoginActivity">
-    <EditText
-        android:id="@+id/name"
+    <androidx.cardview.widget.CardView
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name" />
-    <EditText
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Address" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/phoneno"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Phone No" />
+        <RelativeLayout
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/loginsubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LOGIN" />
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+            <EditText
+                android:layout_below="@+id/name"
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/verficatioCode"
-        android:hint="VerificationCode"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Verify"
-        android:id="@+id/verify"/>
-</LinearLayout>
+            <EditText
+                android:layout_below="@+id/address"
+                android:id="@+id/phoneno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone No" />
+
+            <Button
+                android:layout_below="@+id/phoneno"
+                android:id="@+id/loginsubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LOGIN" />
+
+            <EditText
+                android:layout_below="@+id/loginsubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/verficatioCode"
+                android:hint="VerificationCode"
+                />
+            <Button
+                android:layout_below="@+id/verficatioCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Verify"
+                android:id="@+id/verify"/>
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
