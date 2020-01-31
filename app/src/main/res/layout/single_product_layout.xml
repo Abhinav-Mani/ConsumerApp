@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:weightSum="3"
+    android:layout_margin="20dp"
     android:id="@+id/Product"
     android:layout_height="wrap_content">
 
