@@ -15,6 +15,7 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:background="@drawable/recatngular_border"
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
