@@ -66,6 +66,7 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 OrderRequest orderRequest=(OrderRequest) dataSnapshot.getValue(OrderRequest.class);
+                list.clear();
                 for (MyOrderModel myOrderModel:list)
                 {
                     if (myOrderModel.getDate().trim().equalsIgnoreCase(date.trim())&&myOrderModel.getProductId().trim().equalsIgnoreCase(key.trim())){

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -72,7 +73,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         ImageView imageView;
         TextView productName,Price,DeliverCharge;
         Button call,bagain,deliver,order;
-        LinearLayout product;
+        RelativeLayout product;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView=itemView.findViewById(R.id.productImageSingle);
