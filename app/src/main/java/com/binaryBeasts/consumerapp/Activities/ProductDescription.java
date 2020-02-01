@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.binaryBeasts.consumerapp.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
     ImageView imageView;
     Products products;
     DatabaseReference mRef;
+    FirebaseUser user;
     Button call,order,orderAndDeliver, searchDelivery,bidding;
     int price,deliveryCost=-1;
     String mobileno;
@@ -39,9 +42,42 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_description);
+
         check();
+
         init();
+
+        checkFeatures();
+
         setLayout();
+    }
+
+    private void checkFeatures() {
+        mRef.child("Requests").child(products.getKey()).child(user.getUid()).child("status").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String status=(String) dataSnapshot.getValue();
+                if(status!=null) {
+                    order.setEnabled(false);
+
+                    if (status.equalsIgnoreCase("Pending...")) {
+                        order.setBackgroundColor(Color.rgb(255, 204, 0));
+                        order.setText("Ordered");
+                    } else if (status.equalsIgnoreCase("Cancel")) {
+                        order.setBackgroundColor(Color.rgb(255, 63, 0));
+                        order.setText("Canceled");
+                    } else {
+                        order.setBackgroundColor(Color.rgb(136, 255, 0));
+                        order.setText("Accepted");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setLayout() {
@@ -74,8 +110,9 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
         bidding=findViewById(R.id.bidding);
         orderAndDeliver=findViewById(R.id.orderandDelivery);
         searchDelivery=findViewById(R.id.serchDelivery);
+        user=FirebaseAuth.getInstance().getCurrentUser();
 
-        mobileno= FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+        mobileno= user.getPhoneNumber();
         price=Integer.parseInt(products.getPrice());
         if(!products.getDelivery().equalsIgnoreCase("N/A"))
         {
