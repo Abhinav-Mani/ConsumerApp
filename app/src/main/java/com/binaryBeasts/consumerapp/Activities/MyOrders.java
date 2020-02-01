@@ -45,10 +45,11 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
         mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Orders").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
                 {
                     list.add(new MyOrderModel(dataSnapshot1.getValue().toString(),"Checking","Checking","Checking",dataSnapshot1.getKey()));
-                    getMore(dataSnapshot1.getValue().toString(),dataSnapshot1.getKey(),list.size()-1);
+                    getMore(dataSnapshot1.getValue().toString(),dataSnapshot1.getKey());
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -61,19 +62,22 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
 
     }
 
-    private void getMore(final String date, final String key, final int position) {
-        mRef.child("Requests").child(key).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getMore(final String date, final String key) {
+        mRef.child("Requests").child(key).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 OrderRequest orderRequest=(OrderRequest) dataSnapshot.getValue(OrderRequest.class);
-                list.clear();
-                for (MyOrderModel myOrderModel:list)
+                if(orderRequest==null)
+                    return;
+                int position=0;
+                for (position=0;position<list.size();position++)
                 {
+                    MyOrderModel myOrderModel=list.get(position);
                     if (myOrderModel.getDate().trim().equalsIgnoreCase(date.trim())&&myOrderModel.getProductId().trim().equalsIgnoreCase(key.trim())){
                         myOrderModel.setDeliveryCost(orderRequest.getDeliverPrice());
                         myOrderModel.setProductCost(orderRequest.getProductPrice());
                         myOrderModel.setStatus(orderRequest.getStatus());
-                        Log.d("ak47", "onDataChange: "+orderRequest.getDeliverPrice());
+                        break;
                     }
                 }
                 adapter.notifyItemChanged(position);
@@ -107,11 +111,24 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         mRef.child("Requests").child(myOrderModel.getProductId()).child(user.getUid()).removeValue();
         mRef.child("Consumers").child(user.getPhoneNumber()).child("Orders").child(myOrderModel.getProductId()).removeValue();
+        final String id=myOrderModel.getProductId();
+        if(myOrderModel.getStatus().trim().equalsIgnoreCase("Pending...")) {
+            mRef.child("Products").child(id).child("pendingRequests").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    long cv=(long) dataSnapshot.getValue();
+                    mRef.child("Products").child(id).child("pendingRequests").setValue(cv-1);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void seach(final int position) {
+    public void search(final int position) {
         final MyOrderModel myOrderModel=list.get(position);
         final FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         mRef.child("Products").child(myOrderModel.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {

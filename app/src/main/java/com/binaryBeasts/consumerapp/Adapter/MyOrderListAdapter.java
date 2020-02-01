@@ -1,6 +1,5 @@
 package com.binaryBeasts.consumerapp.Adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +24,9 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         this.list = list;
         clickHandler=myOrders;
     }
-    public static interface ClickHandler{
-        public void delete(int position);
-        public void seach(int position);
+    public interface ClickHandler{
+        void delete(int position);
+        void search(int position);
     }
 
     @NonNull
@@ -53,7 +52,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         holder.searchDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickHandler.seach(position);
+                clickHandler.search(position);
             }
         });
     }

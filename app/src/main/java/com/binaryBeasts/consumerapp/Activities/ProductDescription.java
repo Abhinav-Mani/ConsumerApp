@@ -119,6 +119,7 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
                 orderRequest.setDeliverPrice("N/A");
             }
             Date currentTime = Calendar.getInstance().getTime();
+            mRef.child("Products").child(products.getKey()).child("pendingRequests").setValue(products.getPendingRequests()+1);
             mRef.child("Requests").child(products.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(orderRequest);
             mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Orders").child(products.getKey()).setValue(currentTime.toString());
         }
