@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
         if(getIntent().hasExtra("Consumer")){
             Consumer consumer=(Consumer) getIntent().getSerializableExtra("Consumer");
             reference.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).setValue(consumer);
+            //Set Location for new User
             setLocation();
         }
     }
