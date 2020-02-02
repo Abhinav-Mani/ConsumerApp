@@ -1,14 +1,25 @@
 package com.binaryBeasts.consumerapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
     RecyclerView ProductList;
     ArrayList<Products> list;
     ProductListAdapter adapter;
+    LocationManager locationManager;
+    LocationListener locationListener;
     @Override
     protected void onStart() {
         super.onStart();
@@ -48,9 +61,47 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
                     Intent intent=new Intent(MainActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+
                 }
             }
         });
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("ak47", "onRequestPermissionsResult: 1");
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.e("ak47", "onRequestPermissionsResult: 2");
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.e("ak47", "onRequestPermissionsResult: 3");
+                return;
+            }
+            Log.e("ak47", "onRequestPermissionsResult: 4");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Log.e("ak47", "onRequestPermissionsResult: 5");
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            Log.e("ak47", "onRequestPermissionsResult: 6");
+            Location lastKnownLocation=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Log.e("ak47", "onRequestPermissionsResult: 7");
+            reference.child("Farmers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("address").setValue(lastKnownLocation.getLatitude()+" "+lastKnownLocation.getLongitude());
+        }
+    }
+
+    private void setLocation() {
+        locationManager= (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+            return;
+        }
+        Location lastKnownLocation=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        reference.child("Farmers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("address").setValue(lastKnownLocation.getLatitude()+" "+lastKnownLocation.getLongitude());
     }
 
     @Override
@@ -58,14 +109,40 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        setListeners();
         checkNewUser();
         fetch();
+    }
+
+    private void setListeners() {
+        locationListener=new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
     }
 
     private void checkNewUser() {
         if(getIntent().hasExtra("Consumer")){
             Consumer consumer=(Consumer) getIntent().getSerializableExtra("Consumer");
             reference.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).setValue(consumer);
+            setLocation();
         }
     }
 
