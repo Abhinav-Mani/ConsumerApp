@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="wrap_content">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/productRequestQuantity"
+        android:inputType="number"
+        android:hint="Product Quantity"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/productRequestRate"
+        android:inputType="number"
+        android:hint="Product Rate"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avail Delivery Service"
+        android:checked="true"
+        android:id="@+id/availDelivery"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:inputType="number"
+        android:id="@+id/productRequestDeliveryCharge"
+        android:hint="Product Deliver Charge"/>
+
+</LinearLayout>

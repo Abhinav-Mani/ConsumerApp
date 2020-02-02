@@ -20,9 +20,15 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <TextView
             android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/singleProductName"
+            android:text="Product Name"/>
+        <TextView
+            android:layout_margin="5dp"
+            android:layout_below="@+id/singleProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/singleStatus"
@@ -58,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="1">
             <Button
                 android:layout_width="0dp"
                 android:background="@drawable/round_bg_grey"
@@ -73,6 +79,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/serchDriver"
                 android:text="SEACH DRIVER"/>
+            <Button
+                android:background="@drawable/round_bg_grey"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/callDriver"
+                android:text="CAll DRIVER"/>
         </LinearLayout>
 
 

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -30,18 +32,35 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
     MyOrderListAdapter adapter;
     ArrayList<MyOrderModel> list;
     DatabaseReference mRef;
+    String myAddress;
+    FirebaseUser user;
+    int amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_orders);
+
         init();
+
         fetch();
+
     }
 
 
 
     private void fetch() {
+        mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("address").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myAddress=(String)dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Orders").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -100,6 +119,10 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        user=FirebaseAuth.getInstance().getCurrentUser();
+
+        amount=1;
+
 
     }
 
@@ -127,6 +150,11 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
         adapter.notifyDataSetChanged();
     }
 
+    private void call(String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+        startActivity(intent);
+    }
+
     @Override
     public void search(final int position) {
         final MyOrderModel myOrderModel=list.get(position);
@@ -135,8 +163,8 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Products products=dataSnapshot.getValue(Products.class);
-                DeliveryRequests deliveryRequests=new DeliveryRequests(products.getPhoneNo(),products.getLocation(),user.getPhoneNumber(),"my address","100");
-                mRef.child("Delivery").child(user.getUid()+myOrderModel.getProductId()).setValue(deliveryRequests);
+                DeliveryRequests deliveryRequests=new DeliveryRequests(products.getPhoneNo(),products.getLocation(),user.getPhoneNumber(),myAddress,amount+"");
+                mRef.child("Delivery").child(user.getUid()+"|-|-|"+myOrderModel.getProductId()).setValue(deliveryRequests);
             }
 
             @Override
@@ -145,5 +173,38 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
             }
         });
         Toast.makeText(this,"Search Driver",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void call(int position) {
+        final MyOrderModel myOrderModel=list.get(position);
+        mRef.child("Delivery").child(user.getUid()+"|-|-|"+myOrderModel.getProductId()).child("driver").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final String[] phoneNo = {(String) dataSnapshot.getValue()};
+                if(phoneNo[0] ==null)
+                {
+                    mRef.child("Products").child(myOrderModel.getProductId()).child("phoneNo").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            phoneNo[0] =(String) dataSnapshot.getValue();
+                            call(phoneNo[0]);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }else {
+                    call(phoneNo[0]);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        Toast.makeText(this,"CAll",Toast.LENGTH_SHORT).show();
     }
 }

@@ -27,6 +27,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
     public interface ClickHandler{
         void delete(int position);
         void search(int position);
+        void call(int position);
     }
 
     @NonNull
@@ -39,6 +40,20 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        MyOrderModel myOrderModel=list.get(position);
+        if(myOrderModel.getStatus().trim().equalsIgnoreCase("Pending...")){
+            holder.searchDriver.setVisibility(View.GONE);
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.callDriver.setVisibility(View.GONE);
+        } else if(myOrderModel.getStatus().trim().equalsIgnoreCase("Accepted")){
+            holder.delete.setVisibility(View.GONE);
+            holder.searchDriver.setVisibility(View.VISIBLE);
+            holder.callDriver.setVisibility(View.GONE);
+        } else {
+            holder.delete.setVisibility(View.GONE);
+            holder.searchDriver.setVisibility(View.GONE);
+            holder.callDriver.setVisibility(View.VISIBLE);
+        }
         holder.date.setText(list.get(position).getDate());
         holder.status.setText(list.get(position).getStatus());
         holder.DeliveryCost.setText(list.get(position).getDeliveryCost());
@@ -55,6 +70,12 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
                 clickHandler.search(position);
             }
         });
+        holder.callDriver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickHandler.call(position);
+            }
+        });
     }
 
     @Override
@@ -64,7 +85,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView date,status,DeliveryCost,ProductCost;
-        Button delete, searchDriver;
+        Button delete, searchDriver,callDriver;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             date=itemView.findViewById(R.id.singleDate);
@@ -73,6 +94,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
             ProductCost=itemView.findViewById(R.id.singleProductCost);
             delete=itemView.findViewById(R.id.delete);
             searchDriver=itemView.findViewById(R.id.serchDriver);
+            callDriver=itemView.findViewById(R.id.callDriver);
         }
     }
 }

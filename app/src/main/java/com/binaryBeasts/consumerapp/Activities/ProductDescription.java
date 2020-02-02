@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.binaryBeasts.consumerapp.Fragments.EditOrderDialog;
 import com.binaryBeasts.consumerapp.Models.OrderRequest;
 import com.binaryBeasts.consumerapp.Models.Products;
 import com.binaryBeasts.consumerapp.R;
@@ -29,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ProductDescription extends AppCompatActivity implements View.OnClickListener {
+public class ProductDescription extends AppCompatActivity implements View.OnClickListener,EditOrderDialog.DialogListener {
     TextView productName,productPrice,deliverCharge,maxQuantity;
     ImageView imageView;
     Products products;
@@ -38,6 +39,7 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
     Button call,order,orderAndDeliver, searchDelivery,bidding;
     int price,deliveryCost=-1;
     String mobileno;
+    OrderRequest orderRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +49,19 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
 
         init();
 
+        setListeners();
+
         checkFeatures();
 
         setLayout();
+    }
+
+    private void setListeners() {
+        call.setOnClickListener(this);
+        order.setOnClickListener(this);
+        orderAndDeliver.setOnClickListener(this);
+        searchDelivery.setOnClickListener(this);
+        bidding.setOnClickListener(this);
     }
 
     private void checkFeatures() {
@@ -112,6 +124,13 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
         searchDelivery=findViewById(R.id.serchDelivery);
         user=FirebaseAuth.getInstance().getCurrentUser();
 
+        orderRequest=new OrderRequest(mobileno,String.valueOf(price),String.valueOf(deliveryCost),"1kg");
+        orderRequest.setStatus("Pending...");
+        if(deliveryCost==-1){
+            orderRequest.setDeliverPrice("N/A");
+        }
+
+
         mobileno= user.getPhoneNumber();
         price=Integer.parseInt(products.getPrice());
         if(!products.getDelivery().equalsIgnoreCase("N/A"))
@@ -133,10 +152,6 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
         deliverCharge.setText(products.getDelivery());
         maxQuantity.setText(products.getQuality());
 
-        call.setOnClickListener(this);
-        order.setOnClickListener(this);
-        orderAndDeliver.setOnClickListener(this);
-        searchDelivery.setOnClickListener(this);
 
     }
 
@@ -148,13 +163,8 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
             startActivity(intent);
         }else if(view==bidding){
-
+            openDialog();
         }else if(view==order){
-            OrderRequest orderRequest=new OrderRequest(mobileno,String.valueOf(price),String.valueOf(deliveryCost),"1kg");
-            orderRequest.setStatus("Pending...");
-            if(deliveryCost==-1){
-                orderRequest.setDeliverPrice("N/A");
-            }
             Date currentTime = Calendar.getInstance().getTime();
             mRef.child("Products").child(products.getKey()).child("pendingRequests").setValue(products.getPendingRequests()+1);
             mRef.child("Requests").child(products.getKey()).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(orderRequest);
@@ -163,4 +173,22 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
 
     }
 
+    private void openDialog() {
+        Log.d("ak47", "openDialog: ");
+        EditOrderDialog editOrderDialog=new EditOrderDialog();
+        editOrderDialog.show(getSupportFragmentManager(),"Edit Order");
+
+    }
+
+    @Override
+    public void applyEdits(String quantity, String price, String deliverPrice) {
+        orderRequest.setAmount(quantity);
+        orderRequest.setDeliverPrice(deliverPrice);
+        orderRequest.setProductPrice(price);
+    }
+
+    @Override
+    public Products getDetails() {
+        return products;
+    }
 }
