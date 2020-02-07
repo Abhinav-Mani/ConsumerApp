@@ -124,6 +124,8 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
         searchDelivery=findViewById(R.id.serchDelivery);
         user=FirebaseAuth.getInstance().getCurrentUser();
 
+        mobileno= user.getPhoneNumber();
+
         orderRequest=new OrderRequest(mobileno,String.valueOf(price),String.valueOf(deliveryCost),"1kg");
         orderRequest.setStatus("Pending...");
         if(deliveryCost==-1){
@@ -131,7 +133,7 @@ public class ProductDescription extends AppCompatActivity implements View.OnClic
         }
 
 
-        mobileno= user.getPhoneNumber();
+
         price=Integer.parseInt(products.getPrice());
         if(!products.getDelivery().equalsIgnoreCase("N/A"))
         {
