@@ -4,4 +4,8 @@
         android:title="My Orders"
         android:id="@+id/myOrders"
         ></item>
+    <item
+        android:title="My Grocery List"
+        android:id="@+id/myGroceryList"
+        ></item>
 </menu>
