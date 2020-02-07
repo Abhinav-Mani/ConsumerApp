@@ -32,6 +32,7 @@ import com.binaryBeasts.consumerapp.Activities.ProductDescription;
 import com.binaryBeasts.consumerapp.Adapter.ProductListAdapter;
 import com.binaryBeasts.consumerapp.Models.Consumer;
 import com.binaryBeasts.consumerapp.Models.Products;
+import com.binaryBeasts.consumerapp.Utils.SetPersistence;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -188,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
     }
 
     private void init() {
+        SetPersistence persistence=new SetPersistence();
         mAuth=FirebaseAuth.getInstance();
 
         list=new ArrayList<>();

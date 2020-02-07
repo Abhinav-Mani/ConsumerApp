@@ -17,6 +17,7 @@ import com.binaryBeasts.consumerapp.Models.MyOrderModel;
 import com.binaryBeasts.consumerapp.Models.OrderRequest;
 import com.binaryBeasts.consumerapp.Models.Products;
 import com.binaryBeasts.consumerapp.R;
+import com.binaryBeasts.consumerapp.Utils.SetPersistence;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -110,6 +111,7 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
     }
 
     private void init() {
+        //SetPersistence persistence=new SetPersistence();
         list=new ArrayList<>();
 
         mRef= FirebaseDatabase.getInstance().getReference();
