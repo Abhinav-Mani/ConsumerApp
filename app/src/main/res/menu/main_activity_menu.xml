@@ -4,5 +4,4 @@
         android:title="My Orders"
         android:id="@+id/myOrders"
         ></item>
-
 </menu>

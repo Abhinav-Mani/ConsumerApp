@@ -6,9 +6,6 @@
     android:layout_margin="20dp"
     android:layout_height="wrap_content">
 
-
-
-
 <RelativeLayout
     android:background="@drawable/recatngular_border"
     android:orientation="vertical"

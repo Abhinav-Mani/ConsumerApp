@@ -5,34 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/vegibasketmobile"
+
     tools:context=".Activities.ProductDescription">
     <androidx.cardview.widget.CardView
         android:id="@+id/card_image"
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_margin="10dp"
-            android:background="@drawable/recatngular_border"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/vegi"
+            android:src="@drawable/fruit_consumerapp"
             android:id="@+id/ProductImage"
             android:transitionName="vegetable_open"/>
 
     </androidx.cardview.widget.CardView>
 
    <androidx.cardview.widget.CardView
-
-       android:layout_margin="20dp"
+       android:id="@+id/cardView_details"
        android:layout_below="@+id/card_image"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
 
        <RelativeLayout
-           android:background="@drawable/recatngular_border"
            android:layout_margin="20dp"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
@@ -157,7 +154,17 @@
 
        </RelativeLayout>
 
-
    </androidx.cardview.widget.CardView>
 
+
+    <Button
+        android:background="@drawable/rg_btn_yello"
+        android:layout_margin="30dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:text="See all Orders    "
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>
