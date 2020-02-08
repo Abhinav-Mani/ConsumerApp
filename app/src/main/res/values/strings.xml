@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">ConsumerApp</string>
     <string-array name="snozetime">
+        <item>Never</item>
         <item>1 Week</item>
-        <item>2 Week</item>
         <item>4 days</item>
+        <item>2 day</item>
         <item>1 day</item>
+        <item>2 Week</item>
+        <item>10 seconds</item>
     </string-array>
 </resources>
