@@ -119,6 +119,7 @@ public class GroceryList extends AppCompatActivity implements GroceryListAdapter
             {
                 return;
             }
+            Toast.makeText(GroceryList.this,"Remmainder Set",Toast.LENGTH_SHORT).show();
             switch (i){
                 case 1:
                     ts=7*24*60*60*1000;
