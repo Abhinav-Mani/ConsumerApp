@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
     }
 
     private void init() {
-        SetPersistence persistence=new SetPersistence();
+        //SetPersistence persistence=new SetPersistence();
         mAuth=FirebaseAuth.getInstance();
 
         list=new ArrayList<>();

@@ -28,6 +28,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         void delete(int position);
         void search(int position);
         void call(int position);
+        void feedback(int position);
     }
 
     @NonNull
@@ -41,18 +42,29 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         MyOrderModel myOrderModel=list.get(position);
+        if(myOrderModel.getProductName()!=null){
+            holder.productName.setText(myOrderModel.getProductName());
+        }
         if(myOrderModel.getStatus().trim().equalsIgnoreCase("Pending...")){
             holder.searchDriver.setVisibility(View.GONE);
             holder.delete.setVisibility(View.VISIBLE);
             holder.callDriver.setVisibility(View.GONE);
+            holder.feedback.setVisibility(View.GONE);
         } else if(myOrderModel.getStatus().trim().equalsIgnoreCase("Accepted")){
             holder.delete.setVisibility(View.GONE);
             holder.searchDriver.setVisibility(View.VISIBLE);
             holder.callDriver.setVisibility(View.GONE);
+            holder.feedback.setVisibility(View.GONE);
+        }else if(myOrderModel.getStatus().trim().equalsIgnoreCase("Delivered")){
+            holder.delete.setVisibility(View.GONE);
+            holder.searchDriver.setVisibility(View.GONE);
+            holder.callDriver.setVisibility(View.GONE);
+            holder.feedback.setVisibility(View.VISIBLE);
         } else {
             holder.delete.setVisibility(View.GONE);
             holder.searchDriver.setVisibility(View.GONE);
             holder.callDriver.setVisibility(View.VISIBLE);
+            holder.feedback.setVisibility(View.GONE);
         }
         holder.date.setText(list.get(position).getDate());
         holder.status.setText(list.get(position).getStatus());
@@ -76,6 +88,13 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
                 clickHandler.call(position);
             }
         });
+        holder.feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickHandler.feedback(position);
+            }
+        });
+
     }
 
     @Override
@@ -84,8 +103,8 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView date,status,DeliveryCost,ProductCost;
-        Button delete, searchDriver,callDriver;
+        TextView date,status,DeliveryCost,ProductCost,productName;
+        Button delete, searchDriver,callDriver,feedback;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             date=itemView.findViewById(R.id.singleDate);
@@ -95,6 +114,8 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
             delete=itemView.findViewById(R.id.delete);
             searchDriver=itemView.findViewById(R.id.serchDriver);
             callDriver=itemView.findViewById(R.id.callDriver);
+            feedback=itemView.findViewById(R.id.feedBack);
+            productName=itemView.findViewById(R.id.singleProductName);
         }
     }
 }
