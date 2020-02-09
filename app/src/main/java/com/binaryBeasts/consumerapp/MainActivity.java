@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.binaryBeasts.consumerapp.Activities.BlockedUser;
 import com.binaryBeasts.consumerapp.Activities.GroceryList;
 import com.binaryBeasts.consumerapp.Activities.LoginActivity;
 import com.binaryBeasts.consumerapp.Activities.MyOrders;
@@ -36,6 +37,7 @@ import com.binaryBeasts.consumerapp.Models.Consumer;
 import com.binaryBeasts.consumerapp.Models.Products;
 import com.binaryBeasts.consumerapp.Utils.SetPersistence;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
     ProductListAdapter adapter;
     LocationManager locationManager;
     LocationListener locationListener;
+    FirebaseUser user;
+    long Canceled,Orders;
     @Override
     protected void onStart() {
         super.onStart();
@@ -65,10 +69,44 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
+                }else
+                {
+                    user=FirebaseAuth.getInstance().getCurrentUser();
+                    fetchAndCheck();
                 }
             }
         });
 
+    }
+
+    private void fetchAndCheck() {
+
+        reference.child("Consumers").child(user.getPhoneNumber()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    if (dataSnapshot1.getKey().equalsIgnoreCase("Canceled")) {
+                        Canceled = (long) dataSnapshot1.getValue();
+                    } else if (dataSnapshot1.getKey().equalsIgnoreCase("Orders")) {
+                        Orders = (long) dataSnapshot1.getChildrenCount();
+                    }
+                }
+                CheckForBlock();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void CheckForBlock() {
+        if(100+10*Orders-15*Canceled<0){
+            Intent intent=new Intent(MainActivity.this, BlockedUser.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
