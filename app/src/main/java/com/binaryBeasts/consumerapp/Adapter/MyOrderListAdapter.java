@@ -45,7 +45,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         if(myOrderModel.getProductName()!=null){
             holder.productName.setText(myOrderModel.getProductName());
         }
-        if(myOrderModel.getStatus().trim().equalsIgnoreCase("Pending...")){
+        if(myOrderModel.getStatus().trim().equalsIgnoreCase("Pending...")||myOrderModel.getStatus().trim().equalsIgnoreCase("Cancel")){
             holder.searchDriver.setVisibility(View.GONE);
             holder.delete.setVisibility(View.VISIBLE);
             holder.callDriver.setVisibility(View.GONE);
