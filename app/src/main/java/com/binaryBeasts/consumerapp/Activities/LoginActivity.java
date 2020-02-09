@@ -3,6 +3,7 @@ package com.binaryBeasts.consumerapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,12 +31,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button submit,verify;
     String number,VerificationId,UID,DisplayName,Displayaddress;
     FirebaseAuth mAuth;
+    ProgressDialog mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         intit();
+        mProgress = new ProgressDialog(this);
+        mProgress.setTitle("Logging In.....");
+        mProgress.setMessage("Please wait.");
+        mProgress.setIndeterminate(true);
 
     }
 
@@ -57,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view==submit) {
+            mProgress.show();
             if(TextUtils.isEmpty(name.getText().toString().trim())) {
                 Toast.makeText(LoginActivity.this,"Name cannot Be Empty",Toast.LENGTH_LONG).show();
             }else if(TextUtils.isEmpty(address.getText().toString().trim())){
@@ -92,6 +99,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    mProgress.dismiss();
                     Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Consumer consumer=new Consumer(mAuth.getCurrentUser().getPhoneNumber().toString(),DisplayName,Displayaddress);
