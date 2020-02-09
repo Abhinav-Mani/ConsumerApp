@@ -158,6 +158,18 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
         list.remove(position);
         adapter.notifyItemRemoved(position);
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+        mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Canceled").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long val=(long)dataSnapshot.getValue()+1;
+                mRef.child("Consumers").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Canceled").setValue(val);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         mRef.child("Requests").child(myOrderModel.getProductId()).child(user.getUid()).removeValue();
         mRef.child("Consumers").child(user.getPhoneNumber()).child("Orders").child(myOrderModel.getProductId()).removeValue();
         final String id=myOrderModel.getProductId();
