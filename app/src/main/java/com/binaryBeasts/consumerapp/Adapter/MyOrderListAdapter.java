@@ -1,9 +1,12 @@
 package com.binaryBeasts.consumerapp.Adapter;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,17 +15,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.binaryBeasts.consumerapp.Activities.MyOrders;
 import com.binaryBeasts.consumerapp.Models.MyOrderModel;
 import com.binaryBeasts.consumerapp.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
 public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.MyViewHolder> {
     ArrayList<MyOrderModel> list;
     ClickHandler clickHandler;
+    Context context;
 
     public MyOrderListAdapter(ArrayList<MyOrderModel> list, MyOrders myOrders)
     {
         this.list = list;
         clickHandler=myOrders;
+        context=myOrders.getApplicationContext();
     }
     public interface ClickHandler{
         void delete(int position);
@@ -94,6 +101,15 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
                 clickHandler.feedback(position);
             }
         });
+        Glide.with(context).asBitmap().
+                load(myOrderModel.getImg()).
+                fitCenter().
+                error(R.drawable.vegi).
+                fallback(R.drawable.ic_delete_forever_black_24dp).
+                placeholder(R.drawable.ic_block_black_24dp).
+                diskCacheStrategy(DiskCacheStrategy.RESOURCE).
+                into(holder.photo);
+        Log.e("ak47",list.get(position).getImg()+" ");
 
     }
 
@@ -105,6 +121,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView date,status,DeliveryCost,ProductCost,productName;
         Button delete, searchDriver,callDriver,feedback;
+        ImageView photo;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             date=itemView.findViewById(R.id.singleDate);
@@ -116,6 +133,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
             callDriver=itemView.findViewById(R.id.callDriver);
             feedback=itemView.findViewById(R.id.feedBack);
             productName=itemView.findViewById(R.id.singleProductName);
+            photo=itemView.findViewById(R.id.productImage);
         }
     }
 }

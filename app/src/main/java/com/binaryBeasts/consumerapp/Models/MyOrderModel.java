@@ -1,7 +1,16 @@
 package com.binaryBeasts.consumerapp.Models;
 
 public class MyOrderModel {
-    String Date,Status,DeliveryCost,ProductCost,ProductId,ProductName;
+    String Date,Status,DeliveryCost,ProductCost,ProductId,ProductName,Img;
+
+    public String getImg() {
+        return Img;
+    }
+
+    public void setImg(String img) {
+        Img = img;
+    }
+
     public MyOrderModel(OrderRequest orderRequest){
         DeliveryCost=orderRequest.getDeliverPrice();
         ProductCost=orderRequest.getProductPrice();

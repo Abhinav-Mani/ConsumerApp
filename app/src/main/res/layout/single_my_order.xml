@@ -15,8 +15,14 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_block_black_24dp"
+            android:id="@+id/productImage"/>
         <TextView
             android:layout_margin="5dp"
+            android:layout_below="@+id/productImage"
             android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

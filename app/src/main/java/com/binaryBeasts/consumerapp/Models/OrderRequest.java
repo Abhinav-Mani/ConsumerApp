@@ -1,7 +1,22 @@
 package com.binaryBeasts.consumerapp.Models;
 
 public class OrderRequest {
-    String from,ProductPrice,DeliverPrice,Amount,status,key;
+    String from;
+    String ProductPrice;
+    String DeliverPrice;
+    String Amount;
+    String status;
+    String key;
+
+    public String getImg() {
+        return Img;
+    }
+
+    public void setImg(String img) {
+        Img = img;
+    }
+
+    String Img;
 
     public OrderRequest() {
     }

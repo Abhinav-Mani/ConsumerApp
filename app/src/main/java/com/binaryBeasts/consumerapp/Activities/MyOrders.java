@@ -71,7 +71,9 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
                 list.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
                 {
-                    list.add(new MyOrderModel(dataSnapshot1.getValue().toString(),"Checking","Checking","Checking",dataSnapshot1.getKey()));
+                    MyOrderModel myOrderModel=new MyOrderModel(dataSnapshot1.getValue().toString(),"Checking","Checking","Checking",dataSnapshot1.getKey());
+                    list.add(myOrderModel);
+
                     getMore(dataSnapshot1.getValue().toString(),dataSnapshot1.getKey());
                 }
                 adapter.notifyDataSetChanged();
@@ -111,6 +113,7 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
                 OrderRequest orderRequest=(OrderRequest) dataSnapshot.getValue(OrderRequest.class);
                 if(orderRequest==null)
                     return;
+                Log.d("ak47", "onDataChange: "+orderRequest.getImg());
                 int position=0;
                 for (position=0;position<list.size();position++)
                 {
@@ -119,6 +122,7 @@ public class MyOrders extends AppCompatActivity implements MyOrderListAdapter.Cl
                         myOrderModel.setDeliveryCost(orderRequest.getDeliverPrice());
                         myOrderModel.setProductCost(orderRequest.getProductPrice());
                         myOrderModel.setStatus(orderRequest.getStatus());
+                        myOrderModel.setImg(orderRequest.getImg());
                         break;
                     }
                 }
