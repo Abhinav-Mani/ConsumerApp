@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <RelativeLayout
+       android:id="@+id/image_layout"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <ImageView
+           android:layout_marginTop="20dp"
+           android:src="@drawable/dummy"
+           android:id="@+id/image"
+           android:layout_width="match_parent"
+           android:layout_height="300dp"/>
+
+       <ImageView
+           android:visibility="gone"
+           android:layout_alignParentTop="true"
+           android:layout_alignTop="@+id/image"
+           android:layout_alignEnd="@id/image"
+           android:src="@drawable/bonze_medal"
+           android:layout_width="60dp"
+           android:id="@+id/bronze_medal"
+           android:layout_marginTop="20dp"
+           android:layout_height="60dp"/>
+       <ImageView
+           android:visibility="visible"
+           android:id="@+id/silver_medal"
+           android:layout_alignParentTop="true"
+           android:layout_alignTop="@+id/image"
+           android:layout_alignEnd="@id/image"
+           android:src="@drawable/silver_image"
+           android:layout_width="60dp"
+           android:layout_marginTop="20dp"
+           android:layout_height="60dp"/>
+       <ImageView
+           android:visibility="gone"
+           android:id="@+id/gold_medal"
+           android:layout_alignParentTop="true"
+           android:layout_alignTop="@+id/image"
+           android:layout_alignEnd="@id/image"
+           android:src="@drawable/gold_image"
+           android:layout_width="60dp"
+           android:layout_marginTop="20dp"
+           android:layout_height="60dp"/>
+
+   </RelativeLayout>
+
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:drawableLeft="@drawable/ic_person_black_24dp"
+          android:layout_width="wrap_content"
+          android:text="  Name"
+          android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:id="@+id/name_profile"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_phone_black_24dp"
+            android:layout_width="wrap_content"
+            android:text="  Phone"
+            android:layout_below="@+id/name_profile"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone_profile"/>
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:text="  Address"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/phone_profile"
+            android:id="@+id/address_Profile"
+            android:drawableLeft="@drawable/ic_place_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/points"
+            android:text="  Points"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_redeem_black_24dp"
+            android:layout_below="@+id/address_Profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
