@@ -2,10 +2,14 @@ package com.binaryBeasts.consumerapp.Models;
 
 import com.google.firebase.database.annotations.NotNull;
 
-public class DeliveryRequests {
-    String FarmersNumber,FarmersAddress,CustomerPhoneNo, CustomerAddress,Amount;
+import java.io.Serializable;
 
-    public DeliveryRequests(@NotNull String farmersNumber,@NotNull String farmersAddress,@NotNull String customerPhoneNo,@NotNull String customerAddress,@NotNull String amount) {
+public class DeliveryRequests implements Serializable {
+    String FarmersNumber,FarmersAddress,CustomerPhoneNo, CustomerAddress,Amount,UID,Driver;
+
+    public DeliveryRequests(){}
+
+    public DeliveryRequests(String farmersNumber,String farmersAddress, String customerPhoneNo, String customerAddress, String amount) {
         FarmersNumber = farmersNumber;
         FarmersAddress = farmersAddress;
         CustomerPhoneNo = customerPhoneNo;
@@ -13,8 +17,24 @@ public class DeliveryRequests {
         Amount = amount;
     }
 
+    public String getDriver() {
+        return Driver;
+    }
+
+    public void setDriver(String driver) {
+        Driver = driver;
+    }
+
     public String getFarmersNumber() {
         return FarmersNumber;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public void setFarmersNumber(String farmersNumber) {

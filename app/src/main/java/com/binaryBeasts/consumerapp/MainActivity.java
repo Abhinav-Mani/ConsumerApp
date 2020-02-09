@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.binaryBeasts.consumerapp.Activities.GroceryList;
 import com.binaryBeasts.consumerapp.Activities.LoginActivity;
 import com.binaryBeasts.consumerapp.Activities.MyOrders;
 import com.binaryBeasts.consumerapp.Activities.ProductDescription;
@@ -177,6 +178,10 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
         switch (item.getItemId()){
             case R.id.myOrders:
                 startActivity(new Intent(this, MyOrders.class));
+                break;
+            case R.id.myGroceryList:
+                startActivity(new Intent(MainActivity.this, GroceryList.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -189,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
     }
 
     private void init() {
-        SetPersistence persistence=new SetPersistence();
+        //SetPersistence persistence=new SetPersistence();
         mAuth=FirebaseAuth.getInstance();
 
         list=new ArrayList<>();
