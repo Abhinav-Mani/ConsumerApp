@@ -8,4 +8,11 @@
         android:title="My Grocery List"
         android:id="@+id/myGroceryList"
         ></item>
+    <item
+        android:title="Profile"
+        android:id="@+id/profile"
+        >
+
+
+    </item>
 </menu>

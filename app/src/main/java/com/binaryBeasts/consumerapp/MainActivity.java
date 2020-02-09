@@ -30,6 +30,7 @@ import com.binaryBeasts.consumerapp.Activities.GroceryList;
 import com.binaryBeasts.consumerapp.Activities.LoginActivity;
 import com.binaryBeasts.consumerapp.Activities.MyOrders;
 import com.binaryBeasts.consumerapp.Activities.ProductDescription;
+import com.binaryBeasts.consumerapp.Activities.ProfileActivity;
 import com.binaryBeasts.consumerapp.Adapter.ProductListAdapter;
 import com.binaryBeasts.consumerapp.Models.Consumer;
 import com.binaryBeasts.consumerapp.Models.Products;
@@ -182,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements ProductListAdapte
             case R.id.myGroceryList:
                 startActivity(new Intent(MainActivity.this, GroceryList.class));
                 break;
+            case R.id.profile:
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
